@@ -2,13 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "antd/dist/antd.css";
 import './index.css';
+import { Provider } from 'react-redux'
+import GlobalStyles from 'styles/GlobalStyles'
+
+import Store from './redux/store'
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GlobalStyles />
+    <Provider store={Store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
