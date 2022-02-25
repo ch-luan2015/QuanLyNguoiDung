@@ -2,7 +2,9 @@ import React from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-export default function LoginPage() {
+export interface LoginPageProps { }
+
+export default function LoginPage(props: LoginPageProps) {
   const { Title } = Typography;
 
   const onFinish = (values: any) => {
@@ -13,7 +15,6 @@ export default function LoginPage() {
     console.log('Failed:', errorInfo);
   };
   return (
-
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
       <Col span={8}>
         <Title style={{ textAlign: "center", width: "100%" }}>Login</Title>
@@ -73,4 +74,3 @@ export default function LoginPage() {
     </Row>
   )
 }
-

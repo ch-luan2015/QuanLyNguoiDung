@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu } from 'antd';
-import { UsersList } from "../data/UserList";
+import { UsersList } from "../../data/UserList";
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom'
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
-
-export default function UserList() {
+export function AdminLayout() {
 
   const [users, setUsers] = useState(UsersList)
   const columns = [
@@ -38,13 +37,12 @@ export default function UserList() {
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
-  console.log("users", users)
   return (
     <Layout>
 
       <Header>
         <Menu theme="dark" mode="horizontal" >
-          <Menu.Item >
+          <Menu.Item key={1}>
             <Link to="/">
               Trang Chủ
             </Link>

@@ -1,29 +1,32 @@
 
 import { Counter } from './features/counter/Counter';
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from 'react-router-dom';
-
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import LoginPage from "./pages/LoginPage"
-import UserList from './pages/UserList';
+import LoginPage from "./features/auth/pages/LoginPage"
+import { AdminLayout } from 'components/Layout';
+import NotFound from 'components/NotFound';
+import PrivateRoute from 'components/PrivateRoute';
 
 
 
 function App() {
   return (
+    <>
+      <Switch>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
 
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/userlist" element={<UserList />} />
-      </Routes>
-      <Counter />
+        <PrivateRoute path="/admin">
+          <AdminLayout />
+        </PrivateRoute>
 
-    </BrowserRouter>
-
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
+      {/* <Counter /> */}
+    </>
   );
 }
 
