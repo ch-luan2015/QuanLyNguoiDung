@@ -34,8 +34,8 @@ export default function LoginPage(props: LoginPageProps) {
   const handleLoginClick = () => {
 
     dispatch(authActions.login({
-      username: user.username,
-      email: user.email
+      username: "luan",
+      email: "chinh.luan2015@gmail.com"
     }))
   }
   const onFinish = (values: any) => {
@@ -62,7 +62,7 @@ export default function LoginPage(props: LoginPageProps) {
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Username"
-              onChange={handleInputChange} />
+            />
           </Form.Item>
 
           <Form.Item
@@ -76,7 +76,7 @@ export default function LoginPage(props: LoginPageProps) {
           >
             <Input
               placeholder="email"
-              onChange={handleInputChange}
+
             />
           </Form.Item>
 
