@@ -1,18 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../authSlice';
 
 export interface LoginPageProps { }
 
+const initialUser = {
+  username: "",
+  email: ""
+};
 export default function LoginPage(props: LoginPageProps) {
+  const dispatch = useDispatch();
+
+  const [user, setUser] = useState(initialUser)
   const { Title } = Typography;
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-  };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+  const handleInputChange = (e: any) => {
+
+    const { username, email } = e.target;
+
+    // setUser({
+    //   ...user, [username]: email
+    // })
+
+    console.log("user", username)
+    console.log("email", email)
+
+
+  }
+
+  const handleLoginClick = () => {
+
+    dispatch(authActions.login({
+      username: user.username,
+      email: user.email
+    }))
+  }
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
   };
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
@@ -21,9 +48,6 @@ export default function LoginPage(props: LoginPageProps) {
         <Form
           name="normal_login"
           className="login-form"
-          initialValues={{
-            remember: true,
-          }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -35,35 +59,33 @@ export default function LoginPage(props: LoginPageProps) {
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+              onChange={handleInputChange} />
           </Form.Item>
+
           <Form.Item
-            name="password"
+            name="email"
             rules={[
               {
                 required: true,
-                message: 'Please input your Password!',
+                message: 'Please input your Email!',
               },
             ]}
           >
             <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
+              placeholder="email"
+              onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
 
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
-          </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginRight: "10px" }}>
+            <Button type="primary" htmlType="submit" className="login-form-button"
+              style={{ marginRight: "10px" }}
+              onClick={handleLoginClick}
+            >
               Log in
             </Button>
             Or <a href="">register now!</a>
