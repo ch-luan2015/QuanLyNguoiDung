@@ -5,16 +5,16 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 export default function LoginPage() {
   const { Title } = Typography;
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     console.log('Success:', values);
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
   return (
 
-    <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
+    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
       <Col span={8}>
         <Title style={{ textAlign: "center", width: "100%" }}>Login</Title>
         <Form

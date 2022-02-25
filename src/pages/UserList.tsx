@@ -16,7 +16,7 @@ export default function UserList() {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a>{text}</a>,
+      render: (text: any) => <a>{text}</a>,
     },
 
     {
@@ -27,7 +27,7 @@ export default function UserList() {
     {
       title: '',
       key: 'action',
-      render: (text, record) => (
+      render: (text: any, record: any) => (
         <Space size="middle">
           <Button type="primary" >Sửa</Button>
           <Button type="primary" danger>Xóa</Button>
@@ -35,7 +35,7 @@ export default function UserList() {
       ),
     },
   ];
-  const onFinish = values => {
+  const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
   console.log("users", users)
