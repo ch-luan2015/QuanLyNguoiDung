@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../authSlice';
 
 export interface LoginPageProps { }

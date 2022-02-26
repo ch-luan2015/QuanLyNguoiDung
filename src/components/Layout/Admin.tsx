@@ -1,16 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu } from 'antd';
-import { UsersList } from "../../data/UserList";
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { usersActions } from 'features/users/usersSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 export function AdminLayout() {
 
-  const [users, setUsers] = useState(UsersList)
+  const dispatch = useDispatch();
+  const users = useSelector((state: any) => state.users.usersInitial)
+  const [userList, setUserList] = useState(users)
+
+  console.log("usersList", userList);
+  console.log("users", users);
+
+  useEffect(() => {
+    setUserList(users)
+  }, [users]);
+
   const columns = [
+    {
+      title: "Id",
+      dataIndex: 'id',
+      key: 'id'
+    },
     {
       title: 'Name',
       dataIndex: 'name',
@@ -26,17 +43,30 @@ export function AdminLayout() {
     {
       title: '',
       key: 'action',
-      render: (text: any, record: any) => (
+      render: (record: any) => (
         <Space size="middle">
           <Button type="primary" >Sửa</Button>
-          <Button type="primary" danger>Xóa</Button>
-        </Space>
+          <Button type="primary" danger onClick={() => deleteUserTable(record)}>Xóa</Button>
+        </Space >
       ),
     },
   ];
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
+    let newUser = {
+      "id": (users.length + 1).toString(),
+      "name": values.username,
+      "email": values.email
+    }
+    dispatch(usersActions.addUser(newUser));
   };
+
+  const deleteUserTable = (record: any) => {
+    console.log("record", record.id)
+
+    dispatch(usersActions.deleteUser(record.id));
+  }
+
   return (
     <Layout>
 
@@ -89,10 +119,10 @@ export function AdminLayout() {
 
           <Col span={12}>
             {
-              (users.length) > 0 ?
+              (userList.length) > 0 ?
                 <>
                   <Title>Danh sách người dùng</Title>
-                  <Table columns={columns} dataSource={users} />
+                  <Table columns={columns} dataSource={userList} />
                 </>
                 : <p>Loading</p >}
           </Col>
