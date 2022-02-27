@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu } from 'antd';
+import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu, Modal } from 'antd';
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { usersActions } from 'features/users/usersSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { User } from 'models';
+
+
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -14,6 +17,8 @@ export function AdminLayout() {
   const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users.usersInitial)
   const [userList, setUserList] = useState(users)
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingUser, setEditingUser] = useState<any>();
 
   console.log("usersList", userList);
   console.log("users", users);
@@ -45,14 +50,13 @@ export function AdminLayout() {
       key: 'action',
       render: (record: any) => (
         <Space size="middle">
-          <Button type="primary" >Sửa</Button>
+          <Button type="primary" onClick={() => onEditStudent(record)}>Sửa</Button>
           <Button type="primary" danger onClick={() => deleteUserTable(record)}>Xóa</Button>
         </Space >
       ),
     },
   ];
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
     let newUser = {
       "id": (users.length + 1).toString(),
       "name": values.username,
@@ -62,10 +66,25 @@ export function AdminLayout() {
   };
 
   const deleteUserTable = (record: any) => {
-    console.log("record", record.id)
-
     dispatch(usersActions.deleteUser(record.id));
   }
+
+  const editUserTable = (editingUser: any) => {
+    console.log("editUserTable", editingUser);
+    dispatch(usersActions.editUser(editingUser));
+  }
+
+  const onEditStudent = (record: any) => {
+    setIsEditing(true);
+    setEditingUser({ ...record });
+  };
+
+  const resetEditing = () => {
+    setIsEditing(false);
+    setEditingUser(null);
+  };
+
+  console.log("edditUser", editingUser);
 
   return (
     <Layout>
@@ -123,6 +142,49 @@ export function AdminLayout() {
                 <>
                   <Title>Danh sách người dùng</Title>
                   <Table columns={columns} dataSource={userList} />
+                  <Modal
+                    title="Edit User"
+                    visible={isEditing}
+                    okText="Save"
+                    onCancel={() => {
+                      resetEditing();
+                    }}
+                    onOk={() => {
+                      editUserTable(editingUser);
+                      resetEditing();
+                    }}
+                  >
+                    <Input
+                      addonBefore="Id"
+                      disabled
+                      value={editingUser?.id}
+                      onChange={(e) => {
+                        setEditingUser((user: any) => {
+                          return { ...user, address: e.target.value };
+                        });
+                      }}
+                    />
+                    <Input
+                      addonBefore="Name"
+
+                      value={editingUser?.name}
+                      onChange={(e) => {
+                        setEditingUser((user: any) => {
+                          return { ...user, name: e.target.value };
+                        });
+                      }}
+                    />
+                    <Input
+                      addonBefore="Email"
+                      value={editingUser?.email}
+                      onChange={(e) => {
+                        setEditingUser((user: any) => {
+                          return { ...user, email: e.target.value };
+                        });
+                      }}
+                    />
+
+                  </Modal>
                 </>
                 : <p>Loading</p >}
           </Col>

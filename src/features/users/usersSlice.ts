@@ -43,7 +43,15 @@ const usersSlice = createSlice({
     deleteUser: (state, action: PayloadAction<String>) => {
       state.usersInitial = state.usersInitial.filter((user) => action.payload !== user.id);
     },
-    editUser: (state, action: PayloadAction) => {}
+    editUser: (state, action: PayloadAction<User>) => {
+      let userUpdate = action.payload;
+      state.usersInitial.map((user) => {
+        if (user.id === userUpdate.id) {
+          user.name = userUpdate.name;
+          user.email = userUpdate.email;
+        }
+      });
+    }
   }
 });
 //actions
