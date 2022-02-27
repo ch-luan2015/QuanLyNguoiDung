@@ -37,7 +37,7 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<User>) => {
+    addUser: (state, action: PayloadAction<any>) => {
       state.usersInitial.push(action.payload);
     },
     deleteUser: (state, action: PayloadAction<String>) => {
@@ -45,7 +45,7 @@ const usersSlice = createSlice({
     },
     editUser: (state, action: PayloadAction<User>) => {
       let userUpdate = action.payload;
-      state.usersInitial.map((user) => {
+      state.usersInitial.map((user: User) => {
         if (user.id === userUpdate.id) {
           user.name = userUpdate.name;
           user.email = userUpdate.email;

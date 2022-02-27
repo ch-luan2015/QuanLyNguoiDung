@@ -57,9 +57,9 @@ export function AdminLayout() {
     },
   ];
   const onFinish = (values: any) => {
-    let newUser = {
+    let newUser: User = {
       "id": (users.length + 1).toString(),
-      "name": values.username,
+      "name": values.name,
       "email": values.email
     }
     dispatch(usersActions.addUser(newUser));
@@ -107,7 +107,7 @@ export function AdminLayout() {
               <Form.Item label="Username">
                 <Space>
                   <Form.Item
-                    name="username"
+                    name="name"
                     noStyle
                     rules={[{ required: true, message: 'Username is required' }]}
                   >

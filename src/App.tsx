@@ -10,6 +10,7 @@ import PrivateRoute from 'components/PrivateRoute';
 
 
 function App() {
+
   return (
     <>
       <Switch>
@@ -17,7 +18,7 @@ function App() {
           <LoginPage />
         </Route>
 
-        <PrivateRoute path="/admin">
+        <PrivateRoute path="/admin" >
           <AdminLayout />
         </PrivateRoute>
 
@@ -25,7 +26,6 @@ function App() {
           <NotFound />
         </Route>
       </Switch>
-      {/* <Counter /> */}
     </>
   );
 }

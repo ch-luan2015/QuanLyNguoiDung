@@ -1,94 +1,73 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../authSlice';
+import { authActions, CurrentUser } from '../authSlice';
 
-export interface LoginPageProps { }
 
-const initialUser = {
-  username: "",
-  email: ""
-};
-export default function LoginPage(props: LoginPageProps) {
+
+export default function LoginPage() {
   const dispatch = useDispatch();
-
-  const [user, setUser] = useState(initialUser)
   const { Title } = Typography;
+  const iLoginInRedux = useSelector((state: any) => state.auth.isLoggedIn)
+  const [userLogin, setUserLogin] = useState<CurrentUser | undefined>()
+  const [isLoginIn, setIsLoginIn] = useState(iLoginInRedux)
 
 
-  const handleInputChange = (e: any) => {
 
-    const { username, email } = e.target;
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
 
-    // setUser({
-    //   ...user, [username]: email
-    // })
+  useEffect(() => {
+    if (userLogin !== undefined) {
+      dispatch(authActions.loginSucces(userLogin))
+    }
+  }, [userLogin, iLoginInRedux]);
 
-    console.log("user", username)
-    console.log("email", email)
-
-
-  }
-
-  const handleLoginClick = () => {
-
-    dispatch(authActions.login({
-      username: "luan",
-      email: "chinh.luan2015@gmail.com"
-    }))
-  }
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
+    setUserLogin(values);
+
   };
+
+  console.log("userLogin", userLogin)
+  console.log("isLoginIn", isLoginIn)
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
       <Col span={8}>
         <Title style={{ textAlign: "center", width: "100%" }}>Login</Title>
         <Form
-          name="normal_login"
-          className="login-form"
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
         >
           <Form.Item
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Username!',
-              },
-            ]}
+            label="Username"
+            name="name"
+            rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-            />
+            <Input />
           </Form.Item>
 
           <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Email!',
-              },
-            ]}
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input
-              placeholder="email"
-
-            />
+            <Input.Password />
           </Form.Item>
 
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button"
-              style={{ marginRight: "10px" }}
-              onClick={handleLoginClick}
-            >
-              Log in
+
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              Login
             </Button>
-            Or <a href="">register now!</a>
           </Form.Item>
         </Form>
       </Col>
