@@ -12,7 +12,7 @@ import { User } from 'models';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
-export function AdminLayout() {
+export default function AdminLayout() {
 
   const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users.usersInitial)
