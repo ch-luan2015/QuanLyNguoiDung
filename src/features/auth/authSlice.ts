@@ -38,17 +38,6 @@ const authSlice = createSlice({
     loginSucces(state, action: PayloadAction<CurrentUser>) {
       console.log('currentUser', action.payload);
       state.currentUser = action.payload;
-      if (
-        state.currentUser.name == initialState.adminUser.name &&
-        state.currentUser.password == initialState.adminUser.password
-      ) {
-        state.logging = false;
-        state.isLoggedIn = true;
-
-        return localStorage.setItem('UserLogin', JSON.stringify(action.payload));
-      } else {
-        return console.log('not match');
-      }
     },
 
     logout(state) {

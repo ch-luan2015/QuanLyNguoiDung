@@ -20,8 +20,7 @@ export default function AdminLayout() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingUser, setEditingUser] = useState<any>();
 
-  console.log("usersList", userList);
-  console.log("users", users);
+
 
   useEffect(() => {
     setUserList(users)

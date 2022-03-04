@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions, CurrentUser } from '../authSlice';
+import { Redirect, useHistory } from "react-router-dom";
 
 
 
 export default function LoginPage() {
+  const history = useHistory();
+
+
   const dispatch = useDispatch();
   const { Title } = Typography;
   const iLoginInRedux = useSelector((state: any) => state.auth.isLoggedIn)
@@ -27,12 +30,16 @@ export default function LoginPage() {
 
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
+
     setUserLogin(values);
 
-  };
+    return (
+      history.push("/admin")
+    );
 
-  console.log("userLogin", userLogin)
-  console.log("isLoginIn", isLoginIn)
+  }
+
+
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
       <Col span={8}>
