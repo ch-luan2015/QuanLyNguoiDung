@@ -11,38 +11,35 @@ export interface CurrentUser {
   password?: string;
 }
 export interface AuthState {
-  isLoggedIn: boolean;
-  logging: boolean;
-  currentUser?: CurrentUser;
-  adminUser: AdminUser;
+  isAuthenticated: boolean;
+  loading: boolean;
+  user?: CurrentUser;
 }
 
 const initialState: AuthState = {
-  isLoggedIn: false,
-  logging: false,
-  currentUser: undefined,
-  adminUser: {
-    name: 'luan',
-    email: 'luan123@gmail.com',
-    password: 'luan123',
-    id: '0'
-  }
+  isAuthenticated: false,
+  loading: false,
+  user: undefined
 };
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
     login(state, action: PayloadAction<LoginPayload>) {
-      state.logging = true;
-    },
+      state.loading = true;
+    }, 
+
     loginSucces(state, action: PayloadAction<CurrentUser>) {
-      console.log('currentUser', action.payload);
-      state.currentUser = action.payload;
+      console.log('login user', action.payload);
+      state.user = action.payload;
+      state.loading = false;
+      state.isAuthenticated = true;
     },
 
+   
     logout(state) {
-      state.isLoggedIn = false;
-      state.currentUser = undefined;
+      state.user = undefined;
     }
   }
 });

@@ -1,30 +1,47 @@
-import { AdminUser } from 'models';
 import * as React from 'react';
+
 import { useSelector } from 'react-redux';
-import { Redirect, RouteProps, Route } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { ROLE } from 'models/role';
 
 
-const admin: AdminUser = {
-  name: "luan",
-  email: 'luan123@gmail.com',
-  password: 'luan123',
-  id: '0'
+const PrivateRoute = ({ children, roles }: { children: JSX.Element; roles: Array<ROLE> }) => {
+
+  let location = useLocation();
+
+  const getstate = useSelector(state => state)
+  const { isAuthenticated, user, loading } = useSelector((state: any) => state.auth);
+
+
+
+  console.log("getState", getstate)
+
+  console.log("loading", loading);
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("userLogin", user);
+
+  //Neu loading thi tra ve checking account
+  if (loading) {
+    return <p>Checking authentication...</p>
+  }
+
+  const userHasRequiredRole = user && roles.includes(user.role) ? true : false
+  //Neu khong phai Authen thi chuyen ve /login
+
+  console.log("userHasRequiredRole", userHasRequiredRole);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" state={{ from: location }} />
+  }
+
+  if (isAuthenticated && !userHasRequiredRole) {
+    return <p>AccessDenied</p>; // Quyen truy cap bi tu choi, studen want access teacher page
+  }
+
+  return children;
+
 }
-export default function PrivateRoute(props: RouteProps) {
 
-  console.log("props", props)
-  const userLogin = useSelector((state: any) => state.users.currentUser);
-  console.log("userLogin", userLogin);
-  // if (userLogin.name === admin.name) {
-  //   isLoginIn = true;
-  // }
-  // console.log("isLoginIn", isLoginIn)
-  //Check user login
-  // const isLoggedIn = Boolean(localStorage.getItem('UserLogin'));
+export default PrivateRoute;
 
-
-  // if (!isLoginIn) return <Redirect to="/" />;
-  return <Route {...props} />;
-
-}
 

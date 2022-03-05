@@ -11,13 +11,14 @@ import {
 import * as serviceWorker from './serviceWorker';
 import "antd/dist/antd.css";
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <React.StrictMode>
         <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+      </React.StrictMode>
+    </BrowserRouter>
+  </Provider >
+  ,
   document.getElementById('root')
 );
 

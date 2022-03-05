@@ -2,41 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions, CurrentUser } from '../authSlice';
-import { Redirect, useHistory } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
 
 export default function LoginPage() {
-  const history = useHistory();
 
 
   const dispatch = useDispatch();
   const { Title } = Typography;
-  const iLoginInRedux = useSelector((state: any) => state.auth.isLoggedIn)
   const [userLogin, setUserLogin] = useState<CurrentUser | undefined>()
-  const [isLoginIn, setIsLoginIn] = useState(iLoginInRedux)
-
-
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
+
   useEffect(() => {
-    if (userLogin !== undefined) {
-      dispatch(authActions.loginSucces(userLogin))
-    }
-  }, [userLogin, iLoginInRedux]);
+    dispatchUserLogin();
+  }, [userLogin]);
 
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-
     setUserLogin(values);
+  }
 
-    return (
-      history.push("/admin")
-    );
-
+  const dispatchUserLogin = () => {
+    if (userLogin !== undefined) {
+      return dispatch(authActions.loginSucces(userLogin))
+    }
   }
 
 

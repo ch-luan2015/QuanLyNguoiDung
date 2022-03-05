@@ -1,36 +1,30 @@
 
-import { Counter } from './features/counter/Counter';
-import { Route, Switch, Router } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginPage from "./features/auth/pages/LoginPage"
 import NotFound from 'components/NotFound';
 import PrivateRoute from 'components/PrivateRoute';
 import AdminLayout from 'components/Layout/AdminLayout';
-import { createBrowserHistory } from 'history'
+import { ROLE } from 'models/role';
+import { useEffect } from 'react';
+import { store } from 'app/store';
 
-const history = createBrowserHistory()
 
 
 
 function App() {
 
   return (
-    <Router history={history}>
-      <Switch>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
 
-        <Route exact path="/" component={LoginPage} />
-
-
-        {/* <PrivateRoute path='/admin'  >
+      {/* Private Route */}
+      <Route path='/admin' element={
+        <PrivateRoute roles={[ROLE.Admin]}>
           <AdminLayout />
-        </PrivateRoute> */}
-
-        <Route exact path='/admin' component={AdminLayout} />
-
-        <Route path="/404" component={NotFound} />
-
-      </Switch>
-    </Router>
+        </PrivateRoute>} />
+      <Route path="*" element={NotFound} />
+    </Routes>
   );
 }
 
