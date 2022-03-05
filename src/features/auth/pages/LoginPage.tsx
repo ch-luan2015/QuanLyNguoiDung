@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions, CurrentUser } from '../authSlice';
+import { authActions } from '../authSlice';
 import { Link } from 'react-router-dom';
 
 
@@ -11,26 +11,17 @@ export default function LoginPage() {
 
   const dispatch = useDispatch();
   const { Title } = Typography;
-  const [userLogin, setUserLogin] = useState<CurrentUser | undefined>()
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
 
-  useEffect(() => {
-    dispatchUserLogin();
-  }, [userLogin]);
 
   const onFinish = (values: any) => {
-    setUserLogin(values);
+    dispatch(authActions.login(values))
   }
 
-  const dispatchUserLogin = () => {
-    if (userLogin !== undefined) {
-      return dispatch(authActions.loginSucces(userLogin))
-    }
-  }
 
 
   return (
@@ -48,7 +39,7 @@ export default function LoginPage() {
         >
           <Form.Item
             label="Username"
-            name="name"
+            name="username"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input />

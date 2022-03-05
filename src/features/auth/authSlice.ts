@@ -1,46 +1,48 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AdminUser, User } from '../../models/user';
+import { User } from '../../models/user';
 
 export interface LoginPayload {
-  name: string;
-  email: string;
+  username: string;
+  password: string;
 }
 
-export interface CurrentUser {
-  name?: string;
-  password?: string;
-}
 export interface AuthState {
-  isAuthenticated: boolean;
-  loading: boolean;
-  user?: CurrentUser;
+  isLoggedIn: boolean;
+  logging?: boolean;
+  currentUser?: User;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  loading: false,
-  user: undefined
+  isLoggedIn: false,
+  logging: false,
+  currentUser: undefined,
 };
+
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
+
     login(state, action: PayloadAction<LoginPayload>) {
-      state.loading = true;
+      state.logging = true;
     }, 
 
-    loginSucces(state, action: PayloadAction<CurrentUser>) {
+    loginSuccess(state, action: PayloadAction<User>) {
       console.log('login user', action.payload);
-      state.user = action.payload;
-      state.loading = false;
-      state.isAuthenticated = true;
+      state.isLoggedIn=true;
+      state.logging = false;
+      state.currentUser = action.payload;
     },
 
-   
+    loginFailed(state, action: PayloadAction<string>) {
+      state.logging = false;
+    },
+
     logout(state) {
-      state.user = undefined;
-    }
+      state.isLoggedIn = false;
+      state.currentUser = undefined;
+    },
   }
 });
 
@@ -48,8 +50,8 @@ const authSlice = createSlice({
 export const authActions = authSlice.actions;
 
 //Selector
-// export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
-// export const selectIsLogging = (state: any) => state.auth.logging;
+export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
+export const selectIsLogging = (state: any) => state.auth.logging;
 
 //Reducer
 const authReducer = authSlice.reducer;
