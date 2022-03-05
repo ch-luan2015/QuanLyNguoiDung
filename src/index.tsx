@@ -1,23 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { store } from './app/store';
 import { Provider } from 'react-redux';
-import {
-  BrowserRouter
-} from 'react-router-dom';
-
+import { HistoryRouter as Router } from "redux-first-history/rr6";
+import App from './App';
+import { store, history } from './app/store';
 import * as serviceWorker from './serviceWorker';
+import './index.css';
 import "antd/dist/antd.css";
+
+
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router history={history}>
         <App />
-      </React.StrictMode>
-    </BrowserRouter>
-  </Provider >
+      </Router>
+    </Provider >
+  </React.StrictMode>
   ,
   document.getElementById('root')
 );
@@ -26,3 +25,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+

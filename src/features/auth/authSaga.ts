@@ -1,8 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { push } from 'connected-react-router';
 import { call, delay, fork, take,put } from"redux-saga/effects";
 import { authActions, LoginPayload } from "./authSlice";
-
+import { push } from "redux-first-history";
 
 function* handleLogin(payload: LoginPayload) {
   try {
@@ -20,8 +19,8 @@ function* handleLogin(payload: LoginPayload) {
     );
 
     // redirect to admin page
-    yield put(push('/admin'));
-    
+    yield put(push("/admin"));
+
   } catch (error:any) {
     yield put(authActions.loginFailed(error.message));
   }
@@ -30,9 +29,11 @@ function* handleLogin(payload: LoginPayload) {
 
 function* handleLogout() {
   yield delay(500);
-  console.log("Handle Logout");
-  localStorage.removeItem("access_token");
+  localStorage.removeItem('access_token');
+  
   //Redirect chuyen ve login page
+  yield put(push("/"));
+
 }
 
 function* watchLoginFlow(){

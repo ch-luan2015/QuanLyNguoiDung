@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { usersActions } from 'features/users/usersSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from 'models';
+import { authActions } from 'features/auth/authSlice';
 
 
 
@@ -83,7 +84,10 @@ export default function AdminLayout() {
     setEditingUser(null);
   };
 
-  console.log("edditUser", editingUser);
+  const handleLogout = () => {
+    dispatch(authActions.logout());
+  }
+
 
   return (
     <Layout>
@@ -95,7 +99,10 @@ export default function AdminLayout() {
               Trang Chủ
             </Link>
           </Menu.Item>
+
         </Menu>
+        <Button type="primary" danger onClick={handleLogout}>Logout</Button>
+
       </Header>
 
       <Content>
@@ -140,7 +147,7 @@ export default function AdminLayout() {
               (userList.length) > 0 ?
                 <>
                   <Title>Danh sách người dùng</Title>
-                  <Table columns={columns} dataSource={userList} />
+                  <Table columns={columns} dataSource={userList} rowKey="id" />
                   <Modal
                     title="Edit User"
                     visible={isEditing}

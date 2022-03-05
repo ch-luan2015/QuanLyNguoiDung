@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../authSlice';
-import { Link } from 'react-router-dom';
 
 
 
