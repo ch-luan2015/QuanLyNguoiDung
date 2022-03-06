@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, Button, Checkbox, Row, Col, Typography } from 'antd';
+import { Form, Input, Button, Row, Col, Typography, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../authSlice';
+import { authActions, selectIsLogging } from '../authSlice';
 
 
 
 export default function LoginPage() {
 
-
   const dispatch = useDispatch();
   const { Title } = Typography;
+
+  const isLogging = useSelector(selectIsLogging);
+  console.log("isLogging", isLogging)
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
 
-
   const onFinish = (values: any) => {
     dispatch(authActions.login(values))
   }
-
 
 
   return (
@@ -38,7 +38,7 @@ export default function LoginPage() {
         >
           <Form.Item
             label="Username"
-            name="username"
+            name="name"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input />
@@ -52,11 +52,9 @@ export default function LoginPage() {
             <Input.Password />
           </Form.Item>
 
-
-
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Login
+              {isLogging && <Spin />}  Login
             </Button>
           </Form.Item>
         </Form>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu, Modal } from 'antd';
+import { Table, Col, Row, Button, Form, Input, Space, Tooltip, Typography, Menu, Modal, Image } from 'antd';
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { usersActions } from 'features/users/usersSlice';
-import { v4 as uuidv4 } from 'uuid';
 import { User } from 'models';
-import { authActions } from 'features/auth/authSlice';
+import { authActions, selectCurrentUser } from 'features/auth/authSlice';
+import Avatar from 'antd/lib/avatar/avatar';
 
 
 
@@ -17,15 +17,18 @@ export default function AdminLayout() {
 
   const dispatch = useDispatch();
   const users = useSelector((state: any) => state.users.usersInitial)
+
   const [userList, setUserList] = useState(users)
   const [isEditing, setIsEditing] = useState(false);
   const [editingUser, setEditingUser] = useState<any>();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
 
-
+  console.log("currentUser admin pahe", currentUser);
 
   useEffect(() => {
-    setUserList(users)
-  }, [users]);
+    setUserList(users);
+
+  }, [users, currentUser]);
 
   const columns = [
     {
@@ -93,15 +96,24 @@ export default function AdminLayout() {
     <Layout>
 
       <Header>
-        <Menu theme="dark" mode="horizontal" >
+        <Menu theme="dark" mode="horizontal" style={{ display: "flex", alignItems: "flex-start" }}>
           <Menu.Item key={1}>
             <Link to="/">
               Trang Chủ
             </Link>
           </Menu.Item>
+          <Menu.Item key={2}>
+            {currentUser && <>
+              <Avatar src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 32 }} />} />
+              <span style={{ color: "red" }}>{currentUser.name}</span>
+            </>}
+          </Menu.Item>
+          <Menu.Item key={3}>
+            <Button type="primary" danger onClick={handleLogout}>Logout</Button>
+          </Menu.Item>
+
 
         </Menu>
-        <Button type="primary" danger onClick={handleLogout}>Logout</Button>
 
       </Header>
 

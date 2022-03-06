@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { act } from '@testing-library/react';
 import { User } from '../../models/user';
 
 export interface LoginPayload {
-  username: string;
+  name: string;
   password: string;
 }
 
@@ -15,24 +16,23 @@ export interface AuthState {
 const initialState: AuthState = {
   isLoggedIn: false,
   logging: false,
-  currentUser: undefined,
+  currentUser: undefined
 };
-
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-
     login(state, action: PayloadAction<LoginPayload>) {
       state.logging = true;
-    }, 
+    },
 
-    loginSuccess(state, action: PayloadAction<User>) {
-      console.log('login user', action.payload);
-      state.isLoggedIn=true;
+    loginSuccess(state, action: PayloadAction<LoginPayload>) {
+      state.isLoggedIn = true;
       state.logging = false;
       state.currentUser = action.payload;
+      console.log('login user', action.payload);
+      console.log('currentUser', state.currentUser);
     },
 
     loginFailed(state, action: PayloadAction<string>) {
@@ -42,7 +42,7 @@ const authSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
       state.currentUser = undefined;
-    },
+    }
   }
 });
 
@@ -52,6 +52,7 @@ export const authActions = authSlice.actions;
 //Selector
 export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
 export const selectIsLogging = (state: any) => state.auth.logging;
+export const selectCurrentUser = (state: any) => state.auth.currentUser;
 
 //Reducer
 const authReducer = authSlice.reducer;

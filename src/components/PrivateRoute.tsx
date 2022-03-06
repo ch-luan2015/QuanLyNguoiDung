@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import { ROLE } from 'models/role';
 
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {

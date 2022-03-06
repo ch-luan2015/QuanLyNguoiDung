@@ -7,9 +7,6 @@ import PrivateRoute from 'components/PrivateRoute';
 import AdminLayout from 'components/Layout/AdminLayout';
 
 
-
-
-
 function App() {
 
   return (
